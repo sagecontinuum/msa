@@ -1,0 +1,8 @@
+goals:
+  - Detect objects in a collected image and record results
+current_task: "Run yolo_detect on images/sample.jpg and write detections to results/detections.json"
+pending_actions:
+  - Signal done
+completed_tasks: []
+notes: ""
+last_updated: null
