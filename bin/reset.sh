@@ -7,7 +7,7 @@
 #   bin/reset.sh --clean                Reset + remove old logs and snapshots
 #   bin/reset.sh --clean --template yolo
 #
-# Available templates: any scratchpads/active.NAME.yaml file.
+# Available templates: any config/active.NAME.yaml file.
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
@@ -22,7 +22,7 @@ usage() {
     echo "  --template NAME   Use scratchpads/active.NAME.yaml as the source (default: reset)"
     echo ""
     echo "Available templates:"
-    for f in "$PROJECT_ROOT"/scratchpads/active.*.yaml; do
+    for f in "$PROJECT_ROOT"/config/active.*.yaml; do
         [[ -f "$f" ]] || continue
         name=$(basename "$f" .yaml)
         name="${name#active.}"
@@ -40,7 +40,7 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-TEMPLATE_FILE="$PROJECT_ROOT/scratchpads/active.${TEMPLATE}.yaml"
+TEMPLATE_FILE="$PROJECT_ROOT/config/active.${TEMPLATE}.yaml"
 if [[ ! -f "$TEMPLATE_FILE" ]]; then
     echo "ERROR: Template not found: $TEMPLATE_FILE"
     echo "Run '$(basename "$0") --help' to list available templates."

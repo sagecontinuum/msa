@@ -82,8 +82,8 @@ wake (caused by a trigger)
 | `bin/status.sh` | Print current scratchpad state and storage summary | No |
 | `bin/logs.sh` | Show the most recent cycle log (`-f` to follow) | No |
 | `bin/trigger.sh` | Create the file-watch trigger (`file_watch` scheduler mode only) | No |
-| `scratchpads/active.reset.yaml` | Default reset template (echo demo) | **Yes — edit to change reset state** |
-| `scratchpads/active.yolo.yaml` | YOLO detection example template | **Yes** |
+| `config/active.reset.yaml` | Default reset template (echo demo) | **Yes — edit to change reset state** |
+| `config/active.yolo.yaml` | YOLO detection example template | **Yes** |
 | `requirements.txt` | Python dependencies | No |
 | `README.md` | Quick reference and backend options | No |
 | `MCP_SETUP.md` | Claude Code / MCP integration guide | No |

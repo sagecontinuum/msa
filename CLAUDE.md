@@ -60,8 +60,8 @@ cat logs/$(ls -t logs/ | head -1)
 | `config/config.yaml` | Runtime settings: backend, iterations, scheduler mode | **Yes** |
 | `config/rules.md` | System prompt: identity, goals, tool list, response format | **Yes** |
 | `scratchpads/active.yaml` | Live agent state | **Yes** |
-| `scratchpads/active.reset.yaml` | Default reset template (echo demo) | **Yes** |
-| `scratchpads/active.yolo.yaml` | YOLO detection example template | **Yes** |
+| `config/active.reset.yaml` | Default reset template (echo demo) | **Yes** |
+| `config/active.yolo.yaml` | YOLO detection example template | **Yes** |
 | `scratchpads/*_before/after.yaml` | Per-cycle snapshots (auto-generated) | No |
 | `logs/cycle_*.log` | Full execution trace per cycle (auto-generated) | No |
 | `bin/install.sh` | Create venv + install deps | No |
