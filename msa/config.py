@@ -44,7 +44,7 @@ DEFAULT_CONFIG = {
         "model": "claude-sonnet-4-20250514",
         "max_tokens": 1024,
     },
-    "scratchpad_path": "scratchpads/active.yaml",
+    "scratchpad_path": "scratchpad/active.yaml",
     "rules_path": "config/rules.md",
     "max_iterations": 5,
     "tools": {},

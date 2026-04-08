@@ -38,14 +38,14 @@ As implemented in MSA, that pattern becomes:
 
 ```
 wake (caused by a trigger)
-  └─ load scratchpads/active.yaml
+  └─ load scratchpad/active.yaml
        └─ build prompt (rules.md + scratchpad state + tool list)
             └─ call model (Anthropic / vLLM / Ollama)
                  └─ parse JSON response from model with dispatcher
                       ├─ tool call → tools.py → result logged to scratchpad
                       └─ update_scratchpad → merge args into state
                            └─ repeat until "done" or max_iterations
-                                └─ update scratchpads/active.yaml
+                                └─ update scratchpad/active.yaml
                                      └─ sleep (write log, create snapshots)
 ```
 
@@ -53,7 +53,7 @@ wake (caused by a trigger)
 
 **One action per iteration.** The model emits exactly one JSON object per response — a tool call or a scratchpad update. This keeps the loop and the logs readable.
 
-**Snapshots bracket every cycle.** Before and after each run, the scratchpad is snapshotted to `scratchpads/{timestamp}_before.yaml` and `scratchpads/{timestamp}_after.yaml`. You can always reconstruct what the agent was thinking at any point.
+**Snapshots bracket every cycle.** Before and after each run, the scratchpad is snapshotted to `scratchpad/{timestamp}_before.yaml` and `scratchpad/{timestamp}_after.yaml`. You can always reconstruct what the agent was thinking at any point.
 
 ---
 
@@ -71,9 +71,9 @@ wake (caused by a trigger)
 | `msa/__init__.py` | Package marker | No |
 | `config/config.yaml` | Runtime settings: model backend, iteration limits, scheduler interval | **Yes** |
 | `config/rules.md` | System prompt: agent identity, goals, tool list, response format | **Yes** |
-| `scratchpads/active.yaml` | Live agent state: goals, current task, pending actions, notes | **Yes** |
-| `scratchpads/*_before.yaml` | Pre-cycle snapshots (auto-generated) | No |
-| `scratchpads/*_after.yaml` | Post-cycle snapshots (auto-generated) | No |
+| `scratchpad/active.yaml` | Live agent state: goals, current task, pending actions, notes | **Yes** |
+| `scratchpad/*_before.yaml` | Pre-cycle snapshots (auto-generated) | No |
+| `scratchpad/*_after.yaml` | Post-cycle snapshots (auto-generated) | No |
 | `logs/cycle_*.log` | Full execution trace per cycle (auto-generated) | No |
 | `bin/install.sh` | Create venv and install dependencies | No |
 | `bin/run.sh` | Activate venv and run the agent (`--schedule` for continuous) | No |
@@ -105,7 +105,7 @@ This file is the system prompt. It tells the model who it is, what tools it has,
 
 Replace those with your actual host and directory. Then edit the **Your Goals** section to describe what you want the agent to accomplish. The rest of the file — response format, tool descriptions, decision process — can stay as-is until you add new tools.
 
-### `scratchpads/active.yaml` — Starting state
+### `scratchpad/active.yaml` — Starting state
 
 This is the agent's memory. Edit it to set the initial goals and first task you want the agent to pursue:
 
@@ -179,7 +179,7 @@ bin/reset.sh
 bin/run.sh
 ```
 
-You should see log output describing the cycle: which task was loaded, what the model decided to do, which tool was called, and what the result was. A new file appears in `logs/` and two snapshot files appear in `scratchpads/`.
+You should see log output describing the cycle: which task was loaded, what the model decided to do, which tool was called, and what the result was. A new file appears in `logs/` and two snapshot files appear in `scratchpad/`.
 
 ### Continuous scheduling
 
@@ -210,18 +210,18 @@ Read the most recent log with:
 cat logs/$(ls -t logs/ | head -1)
 ```
 
-### Scratchpad snapshots — `scratchpads/`
+### Scratchpad snapshots — `scratchpad/`
 
 Every cycle creates two files:
 
 ```
-scratchpads/20260330_230709_before.yaml   ← state at wake
-scratchpads/20260330_230709_after.yaml    ← state at sleep
+scratchpad/20260330_230709_before.yaml   ← state at wake
+scratchpad/20260330_230709_after.yaml    ← state at sleep
 ```
 
 Compare before and after to see exactly what changed: which task moved to `completed_tasks`, what was written to `notes`, what was added to `pending_actions`. If the agent looped or stalled, the before/after pair will show it — the state will be nearly identical.
 
-### Live state — `scratchpads/active.yaml`
+### Live state — `scratchpad/active.yaml`
 
 This is the agent's current memory. Read it at any time to see where the agent is in its plan. After a successful cycle, `current_task` will have advanced to the next item in `pending_actions` and the previous task will appear in `completed_tasks`.
 
@@ -239,7 +239,7 @@ last_updated:    # Timestamp of last modification
 To watch the scratchpad evolve in real time while the agent runs:
 
 ```bash
-watch -n 5 cat scratchpads/active.yaml
+watch -n 5 cat scratchpad/active.yaml
 ```
 
 ---
@@ -265,9 +265,9 @@ bin/reset.sh --clean --template yolo
 bin/run.sh
 ```
 
-The scratchpad templates live in `scratchpads/active.*.yaml` — plain YAML files you can read and edit directly. `bin/reset.sh` without `--clean` is safe to run at any time; it only overwrites `active.yaml` and leaves logs and snapshots intact.
+The scratchpad templates live in `scratchpad/active.*.yaml` — plain YAML files you can read and edit directly. `bin/reset.sh` without `--clean` is safe to run at any time; it only overwrites `active.yaml` and leaves logs and snapshots intact.
 
-To add your own template, create `scratchpads/active.MYNAME.yaml` and run `bin/reset.sh --template MYNAME`.
+To add your own template, create `scratchpad/active.MYNAME.yaml` and run `bin/reset.sh --template MYNAME`.
 
 To test the `yolo_detect` tool specifically, place an image at `images/sample.jpg` inside the project directory and use `--template yolo`.
 
@@ -315,7 +315,7 @@ The tool returns a JSON array directly, which the agent can write to a file, log
 
 ### Give the agent real goals
 
-Edit `scratchpads/active.yaml` and `config/rules.md` to describe a genuine recurring task: monitoring a directory, summarizing a log file, polling an API, or managing a queue of work items. The agent loop is already durable — it just needs meaningful goals and the tools to accomplish them.
+Edit `scratchpad/active.yaml` and `config/rules.md` to describe a genuine recurring task: monitoring a directory, summarizing a log file, polling an API, or managing a queue of work items. The agent loop is already durable — it just needs meaningful goals and the tools to accomplish them.
 
 ### Switch to a local model
 

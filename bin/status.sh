@@ -6,7 +6,7 @@
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
-ACTIVE="$PROJECT_ROOT/scratchpads/active.yaml"
+ACTIVE="$PROJECT_ROOT/scratchpad/active.yaml"
 
 if [[ ! -f "$ACTIVE" ]]; then
     echo "No active scratchpad found at $ACTIVE"
@@ -20,7 +20,7 @@ cat "$ACTIVE"
 echo ""
 
 LOG_COUNT=$(ls "$PROJECT_ROOT/logs"/cycle_*.log 2>/dev/null | wc -l | tr -d ' ')
-SNAP_COUNT=$(ls "$PROJECT_ROOT/scratchpads"/*_before.yaml 2>/dev/null | wc -l | tr -d ' ')
+SNAP_COUNT=$(ls "$PROJECT_ROOT/scratchpad"/*_before.yaml 2>/dev/null | wc -l | tr -d ' ')
 
 if [[ "$LOG_COUNT" -gt 0 ]]; then
     LATEST_LOG=$(ls -t "$PROJECT_ROOT/logs"/cycle_*.log | head -1)

@@ -2,7 +2,7 @@
 msa/scratchpad.py — Persistent scratchpad memory for the MSA.
 
 The scratchpad is the agent's only persistent memory. It is a YAML file
-(scratchpads/active.yaml by default) that is:
+(scratchpad/active.yaml by default) that is:
   - Read at the start of every cycle (wake).
   - Mutated in memory throughout the cycle by the dispatcher.
   - Written back at the end of every cycle (sleep).
@@ -50,7 +50,7 @@ class Scratchpad:
     Knows only the expected keys (via DEFAULT_SCHEMA) and how to serialize them.
     """
 
-    def __init__(self, path: str = "scratchpads/active.yaml"):
+    def __init__(self, path: str = "scratchpad/active.yaml"):
         self.path = Path(path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -78,7 +78,7 @@ class Scratchpad:
 
     def snapshot(self, state: dict, cycle_id: str, label: str):
         """
-        Write a read-only copy of state to scratchpads/<cycle_id>_<label>.yaml.
+        Write a read-only copy of state to scratchpad/<cycle_id>_<label>.yaml.
 
         Called with label="before" at wake and label="after" at sleep.
         These files are never modified by the agent; they exist only for auditing.

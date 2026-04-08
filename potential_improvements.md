@@ -46,9 +46,9 @@ small schema.
 
 ---
 
-## 3. Restrict file permissions on logs and scratchpads
+## 3. Restrict file permissions on logs and scratchpad
 
-**What:** `logs/` and `scratchpads/` are currently created with default umask
+**What:** `logs/` and `scratchpad/` are currently created with default umask
 permissions (`664` files, `775` directories), making them readable by any
 user on the machine.
 
@@ -122,7 +122,7 @@ the list.
 
 ## 7. Encrypt or restrict access to scratchpad state
 
-**File:** `msa/scratchpads/`
+**File:** `msa/scratchpad/`
 
 **What:** Scratchpad YAML files store the agent's full working state in
 plaintext.  If the agent is ever given a credential to use (e.g. an API key

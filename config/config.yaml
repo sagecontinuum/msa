@@ -7,7 +7,7 @@ model:
   # base_url: http://localhost:8000/v1   # for vLLM
   # api_key: set via ANTHROPIC_API_KEY env var
 
-scratchpad_path: scratchpads/active.yaml
+scratchpad_path: scratchpad/active.yaml
 rules_path: config/rules.md
 max_iterations: 5
 

@@ -4,7 +4,7 @@
 
 The **Minimal Synthetic Agent (MSA)** is an intentionally small (~600 lines across 7 modules) autonomous agent loop. Its purpose is pedagogy: every component is visible and editable. There is no framework magic hiding the loop.
 
-The agent wakes on a schedule, reads a YAML scratchpad, calls a language model, dispatches the model's JSON response to tools, updates the scratchpad, and sleeps. All state lives in `scratchpads/active.yaml`. No state is held in memory between cycles.
+The agent wakes on a schedule, reads a YAML scratchpad, calls a language model, dispatches the model's JSON response to tools, updates the scratchpad, and sleeps. All state lives in `scratchpad/active.yaml`. No state is held in memory between cycles.
 
 ---
 
@@ -59,10 +59,10 @@ cat logs/$(ls -t logs/ | head -1)
 | `msa/tools.py` | Tool registry + built-ins (echo, shell, read\_file, write\_file, http\_get, yolo\_detect) | **Add tools here** |
 | `config/config.yaml` | Runtime settings: backend, iterations, scheduler mode | **Yes** |
 | `config/rules.md` | System prompt: identity, goals, tool list, response format | **Yes** |
-| `scratchpads/active.yaml` | Live agent state | **Yes** |
+| `scratchpad/active.yaml` | Live agent state | **Yes** |
 | `config/active.reset.yaml` | Default reset template (echo demo) | **Yes** |
 | `config/active.yolo.yaml` | YOLO detection example template | **Yes** |
-| `scratchpads/*_before/after.yaml` | Per-cycle snapshots (auto-generated) | No |
+| `scratchpad/*_before/after.yaml` | Per-cycle snapshots (auto-generated) | No |
 | `logs/cycle_*.log` | Full execution trace per cycle (auto-generated) | No |
 | `bin/install.sh` | Create venv + install deps | No |
 | `bin/run.sh` | Run the agent (handles venv activation) | No |
@@ -87,7 +87,7 @@ Rules added to this project:
 - Only use the `echo` tool if it is explicitly listed as a task. Never use it as a filler action.
 - If there are no pending tasks, signal `done` immediately with a summary.
 
-### 2. `scratchpads/active.yaml` — agent memory
+### 2. `scratchpad/active.yaml` — agent memory
 
 ```yaml
 goals:

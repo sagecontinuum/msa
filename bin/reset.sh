@@ -19,7 +19,7 @@ usage() {
     echo "Usage: $(basename "$0") [--clean] [--template NAME]"
     echo ""
     echo "  --clean           Remove old cycle logs and scratchpad snapshots"
-    echo "  --template NAME   Use scratchpads/active.NAME.yaml as the source (default: reset)"
+    echo "  --template NAME   Use scratchpad/active.NAME.yaml as the source (default: reset)"
     echo ""
     echo "Available templates:"
     for f in "$PROJECT_ROOT"/config/active.*.yaml; do
@@ -47,14 +47,14 @@ if [[ ! -f "$TEMPLATE_FILE" ]]; then
     exit 1
 fi
 
-cp "$TEMPLATE_FILE" "$PROJECT_ROOT/scratchpads/active.yaml"
+cp "$TEMPLATE_FILE" "$PROJECT_ROOT/scratchpad/active.yaml"
 echo "Scratchpad reset from template: active.${TEMPLATE}.yaml"
 
 if $CLEAN; then
     removed=0
     for f in "$PROJECT_ROOT"/logs/cycle_*.log \
-             "$PROJECT_ROOT"/scratchpads/*_before.yaml \
-             "$PROJECT_ROOT"/scratchpads/*_after.yaml; do
+             "$PROJECT_ROOT"/scratchpad/*_before.yaml \
+             "$PROJECT_ROOT"/scratchpad/*_after.yaml; do
         if [[ -f "$f" ]]; then
             rm "$f"
             removed=$((removed + 1))

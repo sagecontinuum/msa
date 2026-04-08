@@ -22,7 +22,7 @@ Create a dedicated system user (e.g. `msa`) with no login shell and minimal file
 
 Provide a `Dockerfile` and `compose.yaml` for running MSA in a container:
 - Pinned Python version and dependencies
-- Mounts for `scratchpads/`, `logs/`, and `config/` so state survives restarts
+- Mounts for `scratchpad/`, `logs/`, and `config/` so state survives restarts
 - Non-root user inside the container
 
 ## 5. systemd service

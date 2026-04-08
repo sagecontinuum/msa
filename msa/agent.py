@@ -147,7 +147,7 @@ Instructions:
 
         Creates a unique cycle_id (timestamp string) used for:
           - The log file name: logs/cycle_<cycle_id>.log
-          - The snapshot file names: scratchpads/<cycle_id>_before/after.yaml
+          - The snapshot file names: scratchpad/<cycle_id>_before/after.yaml
 
         On any unhandled exception in run_cycle(), the pre-cycle state is
         preserved (not lost), an error note is appended, and the after

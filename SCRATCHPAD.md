@@ -9,7 +9,7 @@ For a high-level description of the files and the YAML schema, see **README.md �
 ## The three files
 
 ```
-scratchpads/
+scratchpad/
   active.yaml                    ← the agent's live, durable memory
   20260401_100137_before.yaml    ← state as read at the start of that cycle
   20260401_100137_after.yaml     ← state as left at the end of that cycle
