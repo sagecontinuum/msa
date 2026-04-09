@@ -71,7 +71,7 @@ wake (caused by a trigger)
 | `msa/__init__.py` | Package marker | No |
 | `config/config.yaml` | Runtime settings: model backend, iteration limits, scheduler interval | **Yes** |
 | `config/rules.md` | System prompt: agent identity, goals, tool list, response format | **Yes** |
-| `scratchpad/active.yaml` | Live agent state: goals, current task, pending actions, notes | **Yes** (between cycles or via `bin/reset.sh`) |
+| `scratchpad/active.yaml` | Live agent state written by the agent each cycle | No — edit `config/active.reset.yaml` instead |
 | `scratchpad/*_before.yaml` | Pre-cycle snapshots (auto-generated) | No |
 | `scratchpad/*_after.yaml` | Post-cycle snapshots (auto-generated) | No |
 | `logs/cycle_*.log` | Full execution trace per cycle (auto-generated) | No |
@@ -100,9 +100,9 @@ This file is the system prompt. It tells the model who it is, what tools it has,
 
 Edit the **Your Goals** section to describe what you want the agent to accomplish. The rest of the file — response format, tool descriptions, decision process — can stay as-is until you add new tools.
 
-### `scratchpad/active.yaml` — Starting state
+### `config/active.reset.yaml` — Starting state
 
-This is the agent's memory. Edit it to set the initial goals and first task you want the agent to pursue:
+This is the template the agent starts from. Edit it to set the initial goals and first task you want the agent to pursue:
 
 ```yaml
 goals:
@@ -116,6 +116,8 @@ last_updated: null
 ```
 
 Keep `current_task` short and specific. The agent works best when it has one clear task per cycle rather than vague multi-step goals.
+
+Do not edit `scratchpad/active.yaml` directly — it is overwritten by the agent at the end of every cycle. After editing the template, run `bin/reset.sh` to apply it.
 
 ### `config/config.yaml` — Runtime parameters
 
@@ -167,12 +169,17 @@ bin/check-env.sh
 ### First run
 
 ```bash
-# Reset scratchpad to the default demo state
+# Edit the reset template to set your agent's goals
+$EDITOR config/active.reset.yaml
+
+# Apply the template (copies it into scratchpad/active.yaml)
 bin/reset.sh
 
 # Run one complete agent cycle
 bin/run.sh
 ```
+
+`bin/install.sh` copies the template into `scratchpad/active.yaml` on first install so the file exists. Run `bin/reset.sh` any time you edit the template to reapply it. Never edit `scratchpad/active.yaml` directly — the agent overwrites it at the end of every cycle.
 
 You should see log output describing the cycle: which task was loaded, what the model decided to do, which tool was called, and what the result was. A new file appears in `logs/` and two snapshot files appear in `scratchpad/`.
 
@@ -260,9 +267,9 @@ bin/reset.sh --clean --template yolo
 bin/run.sh
 ```
 
-The scratchpad templates live in `scratchpad/active.*.yaml` — plain YAML files you can read and edit directly. `bin/reset.sh` without `--clean` is safe to run at any time; it only overwrites `active.yaml` and leaves logs and snapshots intact.
+The scratchpad templates live in `config/active.*.yaml` — plain YAML files you can read and edit directly. `bin/reset.sh` without `--clean` is safe to run at any time; it only overwrites `active.yaml` and leaves logs and snapshots intact.
 
-To add your own template, create `scratchpad/active.MYNAME.yaml` and run `bin/reset.sh --template MYNAME`.
+To add your own template, create `config/active.MYNAME.yaml` and run `bin/reset.sh --template MYNAME`.
 
 To test the `yolo_detect` tool specifically, place an image at `images/sample.jpg` inside the project directory and use `--template yolo`.
 
@@ -310,7 +317,7 @@ The tool returns a JSON array directly, which the agent can write to a file, log
 
 ### Give the agent real goals
 
-Edit `scratchpad/active.yaml` and `config/rules.md` to describe a genuine recurring task: monitoring a directory, summarizing a log file, polling an API, or managing a queue of work items. The agent loop is already durable — it just needs meaningful goals and the tools to accomplish them.
+Edit `config/active.reset.yaml` and `config/rules.md` to describe a genuine recurring task: monitoring a directory, summarizing a log file, polling an API, or managing a queue of work items. Then run `bin/reset.sh` to apply the new starting state. The agent loop is already durable — it just needs meaningful goals and the tools to accomplish them.
 
 ### Switch to a local model
 

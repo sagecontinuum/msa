@@ -28,11 +28,18 @@ echo "Installing dependencies..."
 source .venv/bin/activate
 pip install -r requirements.txt
 
+if [[ ! -f "scratchpad/active.yaml" ]]; then
+    echo "Initializing scratchpad from config/active.reset.yaml..."
+    cp config/active.reset.yaml scratchpad/active.yaml
+    echo "Done."
+fi
+
 echo ""
 echo "Setup complete. Next steps:"
 echo ""
+echo "  1. Edit config/active.reset.yaml to set your agent's goals"
+echo "  2. Run bin/reset.sh to apply the template"
 echo "  source .venv/bin/activate"
 echo "  export ANTHROPIC_API_KEY=sk-ant-..."
 echo "  bin/check-env.sh"
-echo "  bin/reset.sh"
 echo "  bin/run.sh"

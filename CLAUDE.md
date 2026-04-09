@@ -59,7 +59,7 @@ cat logs/$(ls -t logs/ | head -1)
 | `msa/tools.py` | Tool registry + built-ins (echo, shell, read\_file, write\_file, http\_get, yolo\_detect) | **Add tools here** |
 | `config/config.yaml` | Runtime settings: backend, iterations, scheduler mode | **Yes** |
 | `config/rules.md` | System prompt: identity, goals, tool list, response format | **Yes** |
-| `scratchpad/active.yaml` | Live agent state | **Yes** |
+| `scratchpad/active.yaml` | Live agent state written by the agent each cycle | No — edit `config/active.reset.yaml` instead |
 | `config/active.reset.yaml` | Default reset template (echo demo) | **Yes** |
 | `config/active.yolo.yaml` | YOLO detection example template | **Yes** |
 | `scratchpad/*_before/after.yaml` | Per-cycle snapshots (auto-generated) | No |
@@ -87,7 +87,9 @@ Rules added to this project:
 - Only use the `echo` tool if it is explicitly listed as a task. Never use it as a filler action.
 - If there are no pending tasks, signal `done` immediately with a summary.
 
-### 2. `scratchpad/active.yaml` — agent memory
+### 2. `config/active.reset.yaml` — agent starting state
+
+Edit this template to set the agent's initial goals and first task. Run `bin/reset.sh` to copy it into `scratchpad/active.yaml`. Do not edit `scratchpad/active.yaml` directly — it is overwritten by the agent at the end of every cycle.
 
 ```yaml
 goals:
