@@ -1,1 +1,6 @@
 .venv/
+__pycache__/
+*.pyc
+scratchpad/*_before.yaml
+scratchpad/*_after.yaml
+logs/cycle_*.log
