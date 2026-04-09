@@ -78,7 +78,7 @@ cat logs/$(ls -t logs/ | head -1)
 
 ### 1. `config/rules.md` — system prompt
 
-This is what the model reads. Find the `[CONFIGURE: ...]` placeholders and replace them. The **Your Goals** section drives everything — be specific. Vague goals produce vague cycles.
+This is what the model reads. The hostname and working directory are injected automatically at runtime. Edit the **Your Goals** section — it drives everything. Be specific. Vague goals produce vague cycles.
 
 Rules added to this project:
 - Call `date -u` via shell **once per cycle**, store the result in `notes`, then reuse it — do not call `date` again.

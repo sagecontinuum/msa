@@ -56,10 +56,14 @@ class Agent:
         self.max_iterations = self.config.get("max_iterations", 5)
 
     def _load_rules(self) -> str:
-        """Read rules.md into a string used as the system prompt every iteration."""
+        """Read rules.md and substitute {{HOSTNAME}} and {{WORKING_DIR}} at runtime."""
+        import socket
         rules_path = Path(self.config.get("rules_path", "config/rules.md"))
         if rules_path.exists():
-            return rules_path.read_text()
+            text = rules_path.read_text()
+            text = text.replace("{{HOSTNAME}}", socket.gethostname())
+            text = text.replace("{{WORKING_DIR}}", str(Path.cwd().resolve()))
+            return text
         logger.warning("No rules file found at %s", rules_path)
         return "You are a helpful agent. Complete tasks listed in your scratchpad."
 

@@ -71,7 +71,7 @@ wake (caused by a trigger)
 | `msa/__init__.py` | Package marker | No |
 | `config/config.yaml` | Runtime settings: model backend, iteration limits, scheduler interval | **Yes** |
 | `config/rules.md` | System prompt: agent identity, goals, tool list, response format | **Yes** |
-| `scratchpad/active.yaml` | Live agent state: goals, current task, pending actions, notes | **Yes** |
+| `scratchpad/active.yaml` | Live agent state: goals, current task, pending actions, notes | **Yes** (between cycles or via `bin/reset.sh`) |
 | `scratchpad/*_before.yaml` | Pre-cycle snapshots (auto-generated) | No |
 | `scratchpad/*_after.yaml` | Post-cycle snapshots (auto-generated) | No |
 | `logs/cycle_*.log` | Full execution trace per cycle (auto-generated) | No |
@@ -96,14 +96,9 @@ Start with these three files in order.
 
 ### `config/rules.md` — Agent identity and behavior
 
-This file is the system prompt. It tells the model who it is, what tools it has, and exactly what JSON format to emit. Open it and find the two `[CONFIGURE: ...]` placeholders:
+This file is the system prompt. It tells the model who it is, what tools it has, and exactly what JSON format to emit. The hostname and working directory are injected automatically at runtime — you do not need to set them.
 
-```
-[CONFIGURE: your hostname or environment description]
-[CONFIGURE: your working directory]
-```
-
-Replace those with your actual host and directory. Then edit the **Your Goals** section to describe what you want the agent to accomplish. The rest of the file — response format, tool descriptions, decision process — can stay as-is until you add new tools.
+Edit the **Your Goals** section to describe what you want the agent to accomplish. The rest of the file — response format, tool descriptions, decision process — can stay as-is until you add new tools.
 
 ### `scratchpad/active.yaml` — Starting state
 
