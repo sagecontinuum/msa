@@ -166,7 +166,7 @@ export ANTHROPIC_API_KEY=sk-ant-...
 bin/check-env.sh
 ```
 
-### First run
+### Preparing for First run
 
 ```bash
 # Edit the reset template to set your agent's goals
@@ -174,23 +174,28 @@ $EDITOR config/active.reset.yaml
 
 # Apply the template (copies it into scratchpad/active.yaml)
 bin/reset.sh
+```
+
+`bin/install.sh` copies the template into `scratchpad/active.yaml` on first install so the file exists. Run `bin/reset.sh` any time you edit the template to reapply it. Never edit `scratchpad/active.yaml` directly — the agent overwrites it at the end of every cycle.
+
+You are now ready to run the agent once
+```bash
 
 # Run one complete agent cycle
 bin/run.sh
 ```
 
-`bin/install.sh` copies the template into `scratchpad/active.yaml` on first install so the file exists. Run `bin/reset.sh` any time you edit the template to reapply it. Never edit `scratchpad/active.yaml` directly — the agent overwrites it at the end of every cycle.
-
 You should see log output describing the cycle: which task was loaded, what the model decided to do, which tool was called, and what the result was. A new file appears in `logs/` and two snapshot files appear in `scratchpad/`.
 
 ### Continuous scheduling
+
+You can also run the agent in an kind of "Read-Eval-Print" loop. The agent will wake every `interval_seconds`, run a full cycle, and sleep. Use Ctrl-C to stop.
+
 
 ```bash
 # Run indefinitely on the configured interval
 python3 -m msa.agent --schedule
 ```
-
-The agent will wake every `interval_seconds`, run a full cycle, and sleep. Use Ctrl-C to stop.
 
 ---
 
